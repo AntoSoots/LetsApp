@@ -54,11 +54,11 @@ export default function ProcessingScreen() {
     ).start();
   }, [pulseValue]);
 
-  // Step progression
+  // Step progression — advance every 6s to stay in sync with ~8s poll cycles
   useEffect(() => {
     const stepInterval = setInterval(() => {
       setCurrentStep((prev) => Math.min(prev + 1, STEPS.length - 1));
-    }, 12000);
+    }, 6000);
     return () => clearInterval(stepInterval);
   }, []);
 
@@ -68,25 +68,32 @@ export default function ProcessingScreen() {
     return () => clearInterval(timer);
   }, []);
 
-  // Poll for completion
+  // Poll for completion with exponential backoff (5s → 10s → 15s, cap at 20s)
   useEffect(() => {
     if (!requestId) return;
-    const pollInterval = setInterval(() => {
-      void (async () => {
-        const status = await pollStatus(requestId);
-        if (status === 'completed') {
-          clearInterval(pollInterval);
-          const results = await fetchResults(requestId);
-          if (results) {
-            router.replace({
-              pathname: '/results',
-              params: { requestId },
-            });
-          }
+    let timeoutId: ReturnType<typeof setTimeout>;
+    let delay = 5000;
+    let active = true;
+
+    const poll = async () => {
+      if (!active) return;
+      const status = await pollStatus(requestId);
+      if (status === 'completed') {
+        const results = await fetchResults(requestId);
+        if (results) {
+          router.replace({ pathname: '/results', params: { requestId } });
         }
-      })();
-    }, 8000);
-    return () => clearInterval(pollInterval);
+        return;
+      }
+      delay = Math.min(delay + 5000, 20000);
+      if (active) timeoutId = setTimeout(() => { void poll(); }, delay);
+    };
+
+    timeoutId = setTimeout(() => { void poll(); }, delay);
+    return () => {
+      active = false;
+      clearTimeout(timeoutId);
+    };
   }, [requestId, pollStatus, fetchResults, router]);
 
   const spin = spinValue.interpolate({

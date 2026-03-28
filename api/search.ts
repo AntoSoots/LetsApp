@@ -28,6 +28,9 @@ interface ProductResult {
   category: SortCategory;
 }
 
+const FREE_SHIPPING_THRESHOLD = 50;
+const DEFAULT_SHIPPING_COST = 4.99;
+
 interface SerperResult {
   title: string;
   link: string;
@@ -196,7 +199,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const products: ProductResult[] = rawResults.map((r) => {
       const price = parsePrice(r.price);
-      const shipping = price > 50 ? 0 : 4.99;
+      const shipping = price > FREE_SHIPPING_THRESHOLD ? 0 : DEFAULT_SHIPPING_COST;
       const origin = detectOrigin(r.link, r.source);
       const deliveryDays =
         origin === 'estonia' ? 2 : origin === 'europe' ? 5 : 14;
@@ -209,8 +212,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         totalCost: price + shipping,
         shippingCost: shipping,
         estimatedDeliveryDays: deliveryDays,
-        rating: r.rating ?? 4.0 + Math.random() * 0.9,
-        reviewCount: r.ratingCount ?? Math.floor(Math.random() * 2000 + 50),
+        rating: r.rating ?? 0,
+        reviewCount: r.ratingCount ?? 0,
         imageUrl: r.imageUrl ?? '',
         purchaseUrl: r.link,
         seller: r.source ?? getHostname(r.link),

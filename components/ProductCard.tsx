@@ -93,10 +93,17 @@ export function ProductCard({ product, category, rank }: Props) {
       <Text style={styles.description} numberOfLines={3}>{product.description}</Text>
 
       <View style={styles.ratingRow}>
-        <Text style={[styles.stars, { color: Colors.warning }]}>{renderStars(product.rating)}</Text>
-        <Text style={styles.ratingText}>
-          {product.rating.toFixed(1)} ({product.reviewCount.toLocaleString()} reviews)
-        </Text>
+        {product.rating > 0 ? (
+          <>
+            <Text style={[styles.stars, { color: Colors.warning }]}>{renderStars(product.rating)}</Text>
+            <Text style={styles.ratingText}>
+              {product.rating.toFixed(1)}
+              {product.reviewCount > 0 ? ` (${product.reviewCount.toLocaleString()} reviews)` : ''}
+            </Text>
+          </>
+        ) : (
+          <Text style={styles.ratingText}>No rating available</Text>
+        )}
       </View>
 
       <View style={styles.priceRow}>
