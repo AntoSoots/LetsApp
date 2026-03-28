@@ -35,7 +35,7 @@ export function ImagePickerComponent({ imageUri, onImageSelected, onImageCleared
       const base64 =
         asset.base64 ??
         (await FileSystem.readAsStringAsync(asset.uri, {
-          encoding: FileSystem.EncodingType.Base64,
+          encoding: 'base64',
         }));
       onImageSelected(asset.uri, base64);
     }
@@ -57,7 +57,7 @@ export function ImagePickerComponent({ imageUri, onImageSelected, onImageCleared
       const base64 =
         asset.base64 ??
         (await FileSystem.readAsStringAsync(asset.uri, {
-          encoding: FileSystem.EncodingType.Base64,
+          encoding: 'base64',
         }));
       onImageSelected(asset.uri, base64);
     }
