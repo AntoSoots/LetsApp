@@ -1,0 +1,83 @@
+{
+  "app": {
+    "title": "Tehop AI",
+    "loading": "Loading...",
+    "error": "Error",
+    "goBack": "← Go Back",
+    "cannotOpenLink": "Cannot open this link."
+  },
+  "home": {
+    "heroTitle": "Tehop AI Sourcing",
+    "heroSubtitle": "Describe or photograph any product — AI finds the best deals across the web",
+    "imageSectionLabel": "Product Image (Optional)",
+    "descriptionLabel": "Describe the Product",
+    "regionLabel": "Search Region",
+    "examplesLabel": "Try an Example",
+    "submitButton": "Source My Product",
+    "footer": "🔒 Secure · AI-Powered · Up to 5 min processing time",
+    "inputRequired": "Input Required",
+    "inputRequiredMessage": "Please enter a product description or upload an image.",
+    "submitError": "Failed to start search. Please try again.",
+    "preparing": "Preparing your search..."
+  },
+  "regions": {
+    "estonia": "Estonia",
+    "europe": "Europe",
+    "global": "Global"
+  },
+  "processing": {
+    "title": "AI is Sourcing",
+    "subtitle": "Finding the best deals for you.\nThis may take up to 5 minutes.",
+    "yourSearch": "Your Search",
+    "aiQuery": "AI-Generated Query",
+    "elapsed": "Elapsed",
+    "notificationNote": "🔔 You'll receive a push notification when results are ready",
+    "steps": {
+      "analyzing": "Analyzing your request...",
+      "generating": "AI is generating search queries...",
+      "scouring": "Scouring the web for products...",
+      "verifying": "Verifying seller security...",
+      "comparing": "Comparing prices and reviews...",
+      "finalizing": "Finalizing results..."
+    }
+  },
+  "results": {
+    "loading": "Loading results...",
+    "errorTitle": "Oops!",
+    "noResultsTitle": "No Results",
+    "noResultsMessage": "Could not find results for this request.",
+    "noProductsTitle": "No products found",
+    "noProductsMessage": "Try adjusting your region filters or search term.",
+    "newSearch": "+ New Search",
+    "aiQueryLabel": "AI Query",
+    "resultCount_one": "{{count}} result",
+    "resultCount_other": "{{count}} results"
+  },
+  "categories": {
+    "cheapest": "Cheapest",
+    "best": "Best",
+    "fastest": "Fastest"
+  },
+  "product": {
+    "noRating": "No rating available",
+    "reviews": "reviews",
+    "shipping": "shipping",
+    "securityWarning": "Security Warning",
+    "securityWarningMessage": "This link may not be fully verified. Proceed with caution.",
+    "cancel": "Cancel",
+    "openAnyway": "Open Anyway",
+    "viewDeal": "View Deal",
+    "express": "⚡ Express",
+    "fast": "✈️ Fast",
+    "standard": "📦 Standard"
+  },
+  "reputation": {
+    "verified": "✓ Verified",
+    "trusted": "✓ Trusted",
+    "unknown": "? Unknown"
+  },
+  "language": {
+    "en": "EN",
+    "et": "ET"
+  }
+}

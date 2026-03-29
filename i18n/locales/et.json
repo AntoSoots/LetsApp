@@ -1,0 +1,83 @@
+{
+  "app": {
+    "title": "Tehop AI",
+    "loading": "Laadimine...",
+    "error": "Viga",
+    "goBack": "← Tagasi",
+    "cannotOpenLink": "Seda linki ei saa avada."
+  },
+  "home": {
+    "heroTitle": "Tehop AI Hankimine",
+    "heroSubtitle": "Kirjelda või pildista toodet — AI leiab parimad pakkumised üle kogu veebi",
+    "imageSectionLabel": "Toote pilt (valikuline)",
+    "descriptionLabel": "Kirjelda toodet",
+    "regionLabel": "Otsinguregioon",
+    "examplesLabel": "Proovi näidet",
+    "submitButton": "Hangi toode",
+    "footer": "🔒 Turvaline · AI-põhine · Kuni 5 min töötlusaeg",
+    "inputRequired": "Sisend puudub",
+    "inputRequiredMessage": "Palun sisesta toote kirjeldus või lae üles pilt.",
+    "submitError": "Otsingu käivitamine ebaõnnestus. Palun proovi uuesti.",
+    "preparing": "Otsingu ettevalmistamine..."
+  },
+  "regions": {
+    "estonia": "Eesti",
+    "europe": "Euroopa",
+    "global": "Globaalne"
+  },
+  "processing": {
+    "title": "AI otsib",
+    "subtitle": "Otsime sulle parimaid pakkumisi.\nSee võib võtta kuni 5 minutit.",
+    "yourSearch": "Sinu otsing",
+    "aiQuery": "AI-genereeritud päring",
+    "elapsed": "Kulunud aeg",
+    "notificationNote": "🔔 Saad teavituse, kui tulemused on valmis",
+    "steps": {
+      "analyzing": "Analüüsin päringut...",
+      "generating": "AI genereerib otsingupäringuid...",
+      "scouring": "Otsin tooteid üle veebi...",
+      "verifying": "Kinnitan müüjate turvalisust...",
+      "comparing": "Võrdlen hindasid ja arvustusi...",
+      "finalizing": "Valmistan tulemused ette..."
+    }
+  },
+  "results": {
+    "loading": "Tulemuste laadimine...",
+    "errorTitle": "Oih!",
+    "noResultsTitle": "Tulemused puuduvad",
+    "noResultsMessage": "Selle päringu jaoks ei leitud tulemusi.",
+    "noProductsTitle": "Tooteid ei leitud",
+    "noProductsMessage": "Proovi muuta regioonifiltrit või otsisõna.",
+    "newSearch": "+ Uus otsing",
+    "aiQueryLabel": "AI päring",
+    "resultCount_one": "{{count}} tulemus",
+    "resultCount_other": "{{count}} tulemust"
+  },
+  "categories": {
+    "cheapest": "Odavaim",
+    "best": "Parim",
+    "fastest": "Kiireim"
+  },
+  "product": {
+    "noRating": "Hinnang puudub",
+    "reviews": "arvustust",
+    "shipping": "tarne",
+    "securityWarning": "Turvahoiatus",
+    "securityWarningMessage": "See link ei pruugi olla täielikult kinnitatud. Jätka ettevaatlikult.",
+    "cancel": "Tühista",
+    "openAnyway": "Ava ikkagi",
+    "viewDeal": "Vaata pakkumist",
+    "express": "⚡ Kiire",
+    "fast": "✈️ Kiir",
+    "standard": "📦 Standard"
+  },
+  "reputation": {
+    "verified": "✓ Kinnitatud",
+    "trusted": "✓ Usaldusväärne",
+    "unknown": "? Tundmatu"
+  },
+  "language": {
+    "en": "EN",
+    "et": "ET"
+  }
+}
