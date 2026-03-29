@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { SourceOrigin, SortCategory } from '../types';
 import { Colors } from '../constants/colors';
 
@@ -10,16 +11,16 @@ interface Props {
   onSelectCategory: (category: SortCategory) => void;
 }
 
-const ORIGINS: { value: SourceOrigin; label: string; flag: string }[] = [
-  { value: 'estonia', label: 'Eesti', flag: '🇪🇪' },
-  { value: 'europe', label: 'Euroopa', flag: '🇪🇺' },
-  { value: 'global', label: 'Globaalne', flag: '🌍' },
+const ORIGINS: { value: SourceOrigin; flag: string }[] = [
+  { value: 'estonia', flag: '🇪🇪' },
+  { value: 'europe', flag: '🇪🇺' },
+  { value: 'global', flag: '🌍' },
 ];
 
-const CATEGORIES: { value: SortCategory; label: string; emoji: string; color: string }[] = [
-  { value: 'cheapest', label: 'Odavaim', emoji: '💚', color: Colors.cheapest },
-  { value: 'best', label: 'Parim', emoji: '⭐', color: Colors.best },
-  { value: 'fastest', label: 'Kiireim', emoji: '⚡', color: Colors.fastest },
+const CATEGORIES: { value: SortCategory; emoji: string; color: string }[] = [
+  { value: 'cheapest', emoji: '💚', color: Colors.cheapest },
+  { value: 'best', emoji: '⭐', color: Colors.best },
+  { value: 'fastest', emoji: '⚡', color: Colors.fastest },
 ];
 
 export function FilterBar({
@@ -28,6 +29,8 @@ export function FilterBar({
   onToggleOrigin,
   onSelectCategory,
 }: Props) {
+  const { t } = useTranslation();
+
   return (
     <View style={styles.container}>
       <ScrollView
@@ -55,7 +58,7 @@ export function FilterBar({
                 activeCategory === cat.value && styles.chipLabelActive,
               ]}
             >
-              {cat.label}
+              {t(`categories.${cat.value}`)}
             </Text>
           </TouchableOpacity>
         ))}
@@ -77,7 +80,7 @@ export function FilterBar({
                 activeOrigins.includes(origin.value) && styles.originLabelActive,
               ]}
             >
-              {origin.label}
+              {t(`regions.${origin.value}`)}
             </Text>
           </TouchableOpacity>
         ))}

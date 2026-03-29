@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ProductCard } from '../components/ProductCard';
 import { FilterBar } from '../components/FilterBar';
@@ -17,6 +18,7 @@ import { Colors } from '../constants/colors';
 
 export default function ResultsScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
   const { requestId } = useLocalSearchParams<{ requestId: string }>();
   const { fetchResults, results, isLoading, error } = useProductSearch();
 
@@ -59,7 +61,7 @@ export default function ResultsScreen() {
       <SafeAreaView style={styles.container} edges={['bottom']}>
         <View style={styles.centered}>
           <ActivityIndicator size="large" color={Colors.primary} />
-          <Text style={styles.loadingText}>Loading results...</Text>
+          <Text style={styles.loadingText}>{t('results.loading')}</Text>
         </View>
       </SafeAreaView>
     );
@@ -70,10 +72,10 @@ export default function ResultsScreen() {
       <SafeAreaView style={styles.container} edges={['bottom']}>
         <View style={styles.centered}>
           <Text style={styles.errorEmoji}>⚠️</Text>
-          <Text style={styles.errorTitle}>Oops!</Text>
+          <Text style={styles.errorTitle}>{t('results.errorTitle')}</Text>
           <Text style={styles.errorText}>{error}</Text>
           <TouchableOpacity style={styles.retryButton} onPress={() => router.back()}>
-            <Text style={styles.retryText}>← Go Back</Text>
+            <Text style={styles.retryText}>{t('app.goBack')}</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -85,10 +87,10 @@ export default function ResultsScreen() {
       <SafeAreaView style={styles.container} edges={['bottom']}>
         <View style={styles.centered}>
           <Text style={styles.errorEmoji}>📭</Text>
-          <Text style={styles.errorTitle}>No Results</Text>
-          <Text style={styles.errorText}>Could not find results for this request.</Text>
+          <Text style={styles.errorTitle}>{t('results.noResultsTitle')}</Text>
+          <Text style={styles.errorText}>{t('results.noResultsMessage')}</Text>
           <TouchableOpacity style={styles.retryButton} onPress={() => router.back()}>
-            <Text style={styles.retryText}>← Go Back</Text>
+            <Text style={styles.retryText}>{t('app.goBack')}</Text>
           </TouchableOpacity>
         </View>
       </SafeAreaView>
@@ -101,7 +103,7 @@ export default function ResultsScreen() {
     <SafeAreaView style={styles.container} edges={['bottom']}>
       {results.aiQuery ? (
         <View style={styles.queryBanner}>
-          <Text style={styles.queryBannerLabel}>AI Query</Text>
+          <Text style={styles.queryBannerLabel}>{t('results.aiQueryLabel')}</Text>
           <Text style={styles.queryBannerText} numberOfLines={2}>
             "{results.aiQuery}"
           </Text>
@@ -125,19 +127,17 @@ export default function ResultsScreen() {
         ListEmptyComponent={
           <View style={styles.emptyContainer}>
             <Text style={styles.emptyEmoji}>🔍</Text>
-            <Text style={styles.emptyTitle}>No products found</Text>
-            <Text style={styles.emptyText}>
-              Try adjusting your region filters or search term.
-            </Text>
+            <Text style={styles.emptyTitle}>{t('results.noProductsTitle')}</Text>
+            <Text style={styles.emptyText}>{t('results.noProductsMessage')}</Text>
           </View>
         }
         ListHeaderComponent={
           <View style={styles.listHeader}>
             <Text style={styles.listHeaderText}>
-              {filtered.length} result{filtered.length !== 1 ? 's' : ''}
+              {t('results.resultCount', { count: filtered.length })}
             </Text>
             <TouchableOpacity onPress={() => router.push('/')}>
-              <Text style={styles.newSearchText}>+ New Search</Text>
+              <Text style={styles.newSearchText}>{t('results.newSearch')}</Text>
             </TouchableOpacity>
           </View>
         }

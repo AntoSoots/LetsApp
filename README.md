@@ -1,99 +1,154 @@
 # Tehop AI Sourcing App
 
-An enterprise-grade mobile application for AI-powered product sourcing. Users describe or photograph a product, and an AI system finds the best purchasing options across the web — ranked by price, quality, and delivery speed.
+Ettevõttetaseme mobiilirakendus AI-põhiseks toodete hankimiseks. Kasutajad kirjeldavad või pildivad toodet ning tehisintellektisüsteem leiab parimad ostuvõimalused üle veebi — järjestatuna hinna, kvaliteedi ja tarnekiiruse alusel.
 
-## Features
+## Funktsioonid
 
-- 📸 **Image + Text Input** — Describe a product in text or photograph it
-- 🤖 **GPT-4o-mini Vision Analysis** — AI refines your query into precise e-commerce search terms
-- 🌐 **Multi-Source Search** — Searches globally via Serper.dev Shopping API
-- 💚 **Cheapest / ⭐ Best / ⚡ Fastest** — Three category rankings per search
-- 🇪🇪🇪🇺🌍 **Region Filtering** — Estonia, Europe, or Global sourcing
-- 🔒 **Security Verification** — Seller reputation and HTTPS checks
-- 🔔 **Push Notifications** — Get notified when results are ready (up to 5 min)
-- 💾 **Persistent History** — Recent searches saved locally via AsyncStorage
+- 📸 **Pilt + Tekst** — Kirjelda toodet tekstis või pildista see
+- 🤖 **GPT-4o-mini Vision** — AI täpsustab päringu optimaalseteks e-kaubanduse otsingutermideks
+- 🌐 **Mitme allika otsing** — Otsib globaalselt Serper.dev Shopping API kaudu
+- 💚 **Odavaim / ⭐ Parim / ⚡ Kiireim** — Kolm kategooriareitingut iga otsingu kohta
+- 🇪🇪🇪🇺🌍 **Regioonitfilter** — Eesti, Euroopa või globaalne hankimine
+- 🔒 **Turvakontroll** — Müüja maine ja HTTPS-i kontroll
+- 🔔 **Tõuketeavitused** — Teavitus, kui tulemused on valmis (kuni 5 min)
+- 💾 **Püsiv ajalugu** — Hiljutised otsingud salvestatakse kohalikult AsyncStorage abil
+- 🌍 **Mitmekeelne** — Eesti ja inglise keel (i18next)
 
-## Tech Stack
+## Tehnoloogiline stäkk
 
-| Layer | Technology |
-|-------|-----------|
-| Mobile App | React Native + Expo SDK 52 |
-| Navigation | Expo Router v4 |
-| Styling | NativeWind v4 (Tailwind CSS) |
-| Language | TypeScript (strict) |
-| Backend | Vercel Serverless Functions |
+| Kiht | Tehnoloogia |
+|------|-------------|
+| Mobiilirakendus | React Native 0.79.7 + Expo SDK 55.0.9 |
+| Navigatsioon | Expo Router 55.0.8 (v4 failipõhine marsruutimine) |
+| Stiilimine | NativeWind 4.2.3 (Tailwind CSS 3.4.19) |
+| Keel | TypeScript 6.0.2 (range režiim) |
+| i18n | i18next 26.0.1 + react-i18next 17.0.1 (ET / EN) |
+| Backend | Vercel serverlessid funktsioonid (Node.js) |
 | AI | OpenAI GPT-4o-mini |
-| Search | Serper.dev Shopping API |
-| Database | Supabase (PostgreSQL) |
-| Notifications | Expo Push Notifications |
-| Storage | AsyncStorage |
+| Otsing | Serper.dev Shopping API |
+| Andmebaas | Supabase (PostgreSQL) |
+| Teavitused | Expo Push Notifications |
+| Salvestus | AsyncStorage 3.0.2 |
+| React | 19.2.4 |
+| Node.js | ^25.8.2 (praegune stabiilne väljalase) |
 
-## Project Structure
+## Projekti struktuur
 
 ```
-├── app/                    # Expo Router screens
-│   ├── _layout.tsx         # Root layout with navigation stack
-│   ├── index.tsx           # Home / Input screen
-│   ├── processing.tsx      # "AI is thinking" animated screen
-│   └── results.tsx         # Product results with filtering
+├── app/                    # Expo Router ekraanid
+│   ├── _layout.tsx         # Juurpaigutus (i18n Provider + navigeerimispink)
+│   ├── index.tsx           # Avakuva / Sisestuskuva
+│   ├── processing.tsx      # "AI mõtleb" animeeritud kuva
+│   └── results.tsx         # Toodete tulemused filtreerimisega
 ├── components/
-│   ├── ImagePickerComponent.tsx  # Camera/gallery image picker
-│   ├── ProductCard.tsx           # Rich product display card
-│   ├── FilterBar.tsx             # Category & region filter chips
-│   └── LoadingOverlay.tsx        # Full-screen loading state
+│   ├── ImagePickerComponent.tsx  # Kaamera/galerii pildi valimine
+│   ├── LanguageSwitcher.tsx      # ET ↔ EN keelevahetaja
+│   ├── ProductCard.tsx           # Rikkalik toodetekaart
+│   ├── FilterBar.tsx             # Kategooria- ja regioonifiltrid
+│   └── LoadingOverlay.tsx        # Täisekraani laadimise olek
 ├── hooks/
-│   ├── useProductSearch.ts       # Search state management
-│   └── useNotifications.ts       # Push notification registration
+│   ├── useProductSearch.ts       # Otsingu olekuhaldus
+│   └── useNotifications.ts       # Tõuketeavituste registreerimine
 ├── services/
-│   ├── api.ts                    # Axios API client
-│   ├── notifications.ts          # Expo Notifications service
-│   └── storage.ts                # AsyncStorage helpers
-├── types/index.ts               # Shared TypeScript types
-├── constants/colors.ts          # Design system colors
-├── api/                         # Vercel serverless functions
-│   ├── analyze.ts               # POST /api/analyze (AI query generation)
-│   └── search.ts                # POST/GET /api/search (product search)
-└── global.css                   # NativeWind / Tailwind CSS entry
+│   ├── api.ts                    # Axios API klient
+│   ├── notifications.ts          # Expo Notifications teenus
+│   └── storage.ts                # AsyncStorage abifunktsioonid
+├── i18n/
+│   ├── index.ts                  # i18next konfiguratsioon
+│   └── locales/
+│       ├── en.json               # Ingliskeelsed tõlked
+│       └── et.json               # Eestikeelsed tõlked
+├── types/index.ts               # Jagatud TypeScripti tüübid
+├── constants/colors.ts          # Disainisüsteemi värvid
+├── api/                         # Vercel serverless funktsioonid
+│   ├── analyze.ts               # POST /api/analyze (AI päringu genereerimine)
+│   └── search.ts                # POST/GET /api/search (toodete otsing)
+└── global.css                   # NativeWind / Tailwind CSS sisend
 ```
 
-## Getting Started
+## Alustamine
 
-### Prerequisites
+### Eeldused
 
-- Node.js 18+
+- Node.js ^25.8.2 (praegune stabiilne väljalase — alla laadida [nodejs.org](https://nodejs.org))
 - Expo CLI: `npm install -g expo-cli`
-- An Expo account (for push notifications)
+- Expo konto (tõuketeavituste jaoks)
 
-### Installation
+### Paigaldamine
 
 ```bash
 git clone <repo-url>
 cd LetsApp
 npm install
 cp .env.example .env
-# Fill in your API keys in .env
-expo start
+# Täida .env failis oma API võtmed
 ```
 
-### Environment Variables
+### Keskkonna muutujad
 
-Copy `.env.example` to `.env` and fill in:
+Kopeeri `.env.example` failiks `.env` ja täida:
 
-| Variable | Description |
-|----------|-------------|
-| `OPENAI_API_KEY` | OpenAI API key (GPT-4o-mini access required) |
-| `SERPER_API_KEY` | Serper.dev API key for shopping search |
-| `SUPABASE_URL` | Your Supabase project URL |
-| `SUPABASE_ANON_KEY` | Supabase anonymous/public key |
-| `SUPABASE_SERVICE_KEY` | Supabase service role key (backend only) |
-| `EXPO_PUBLIC_API_URL` | Your Vercel deployment URL |
+| Muutuja | Kirjeldus |
+|---------|-----------|
+| `OPENAI_API_KEY` | OpenAI API võti (vajalik GPT-4o-mini ligipääs) |
+| `SERPER_API_KEY` | Serper.dev API võti ostuotsinguks |
+| `SUPABASE_URL` | Sinu Supabase projekti URL |
+| `SUPABASE_ANON_KEY` | Supabase anonüümne/avalik võti |
+| `SUPABASE_SERVICE_KEY` | Supabase teenuse rolli võti (ainult backend) |
+| `EXPO_PUBLIC_API_URL` | Sinu Vercel kasutuselevõtu URL |
 
-## Supabase Schema
+## Mobiilis testimine Expo Go abil
 
-Run this SQL in your Supabase project:
+### Samm-sammuline juhend
+
+1. **Paigalda Expo Go** oma telefoni:
+   - iOS: [App Store — Expo Go](https://apps.apple.com/app/expo-go/id982107779)
+   - Android: [Google Play — Expo Go](https://play.google.com/store/apps/details?id=host.exp.exponent)
+
+2. **Käivita arendusserver:**
+   ```bash
+   npx expo start
+   ```
+   Terminalis ilmub QR-kood.
+
+3. **Skaneeri QR-kood:**
+   - **iOS**: Ava kaamera rakendus, suuna kaamera QR-koodi peale. Toksake ilmuvat teadet.
+   - **Android**: Ava Expo Go rakendus → toksake **"Scan QR code"** → skaneeri kood.
+
+4. Rakendus laaditakse alla sinu telefonile ja käivitub automaatselt.
+
+> **Märkus:** Arendusserver ja telefon peavad olema samas WiFi-võrgus.
+
+### Tootmistestimine (hiljem)
+
+#### TestFlight (iOS)
+
+1. Loo [EAS Build](https://docs.expo.dev/build/introduction/) konfiguratsioon:
+   ```bash
+   npm install -g eas-cli
+   eas build:configure
+   eas build --platform ios
+   ```
+2. Lae `.ipa` üles [App Store Connecti](https://appstoreconnect.apple.com).
+3. Lisa TestFlight testijad e-posti aadressi kaudu.
+4. Testijad saavad TestFlight rakenduse kaudu kutse.
+
+#### Google Play Console (Android)
+
+1. Ehita APK või AAB:
+   ```bash
+   eas build --platform android
+   ```
+2. Logi sisse [Google Play Console'i](https://play.google.com/console).
+3. Loo uus rakendus → Sisemise testimise rada → Lae üles `.aab` fail.
+4. Lisa testijad e-posti aadressi kaudu.
+
+## Supabase skeem
+
+Käivita see SQL oma Supabase projektis:
 
 ```sql
--- Search requests table
+-- Otsingu päringute tabel
 create table search_requests (
   id uuid primary key,
   text_input text,
@@ -106,7 +161,7 @@ create table search_requests (
   completed_at timestamptz
 );
 
--- Search results table
+-- Otsingu tulemuste tabel
 create table search_results (
   id uuid primary key default gen_random_uuid(),
   request_id uuid references search_requests(id),
@@ -130,61 +185,61 @@ create table search_results (
   created_at timestamptz default now()
 );
 
--- Indexes
+-- Indeksid
 create index on search_requests(status);
 create index on search_results(request_id);
 create index on search_results(category);
 ```
 
-## Deploying the Backend
+## Backendi kasutuselevõtt (Vercel)
 
 ```bash
 npm install -g vercel
 vercel --prod
 ```
 
-Set the environment variables in the Vercel dashboard or via `vercel env add`.
+Lisa keskkonna muutujad Vercel armatuurlaual või käsuga `vercel env add`.
 
-## App Flow
+## Rakenduse voog
 
 ```
-Home Screen
-  │  User enters text + optional image
-  │  Selects region filters
+Avakuva
+  │  Kasutaja sisestab teksti + valikulise pildi
+  │  Valib regioonifiltrid
   ↓
 POST /api/analyze
-  │  AI generates optimized search query
-  │  Stores request in Supabase
+  │  AI genereerib optimeeritud otsingupäringu
+  │  Salvestab päringu Supabase'i
   ↓
-Processing Screen
-  │  Animated steps UI
-  │  Polls GET /api/analyze every 8s
+Töötlemiskuva
+  │  Animeeritud sammud
+  │  Küsitlus GET /api/analyze iga 8s tagant (eksponentsiaalne viivitus)
   ↓
-POST /api/search (background)
-  │  Fetches products via Serper.dev
-  │  Categorizes: cheapest / best / fastest
-  │  Saves to Supabase
-  │  Sends push notification
+POST /api/search (taustaprotsess)
+  │  Toob tooted Serper.dev kaudu
+  │  Kategoriseerib: odavaim / parim / kiireim
+  │  Salvestab Supabase'i
+  │  Saadab tõuketeavituse
   ↓
-Results Screen
-  │  Displays ProductCards
-  │  Filter by category & region
-  │  Open deals in browser
+Tulemuste kuva
+  │  Kuvab tootekaardid
+  │  Filtreerimine kategooria ja regiooni järgi
+  │  Ava pakkumised brauseris
 ```
 
-## Design System
+## Disainisüsteem
 
-The app uses a dark navy theme:
+Rakendus kasutab tumedat merevärvi teemat:
 
-| Token | Value | Usage |
-|-------|-------|-------|
-| Background | `#0F172A` | Screen backgrounds |
-| Surface | `#1E293B` | Cards, inputs |
-| Primary | `#6366F1` | Buttons, active states |
-| Cheapest | `#10B981` | Green price category |
-| Best | `#6366F1` | Purple quality category |
-| Fastest | `#F59E0B` | Amber speed category |
+| Token | Väärtus | Kasutus |
+|-------|---------|---------|
+| Taust | `#0F172A` | Ekraanide tausta |
+| Pind | `#1E293B` | Kaardid, sisendid |
+| Primaarne | `#6366F1` | Nupud, aktiivsed olekud |
+| Odavaim | `#10B981` | Roheline hinnakategooria |
+| Parim | `#6366F1` | Lilla kvaliteedikategooria |
+| Kiireim | `#F59E0B` | Kollane kiiruskategooria |
 
-## License
+## Litsents
 
 MIT

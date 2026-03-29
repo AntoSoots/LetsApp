@@ -8,6 +8,7 @@ import {
   Alert,
   StyleSheet,
 } from 'react-native';
+import { useTranslation } from 'react-i18next';
 import { ProductResult, SortCategory } from '../types';
 import { Colors } from '../constants/colors';
 
@@ -17,33 +18,31 @@ interface Props {
   rank?: number;
 }
 
-const CATEGORY_CONFIG: Record<SortCategory, { label: string; color: string; emoji: string }> = {
-  cheapest: { label: 'Odavaim', color: Colors.cheapest, emoji: '💚' },
-  best: { label: 'Parim', color: Colors.best, emoji: '⭐' },
-  fastest: { label: 'Kiireim', color: Colors.fastest, emoji: '⚡' },
-};
-
-const REPUTATION_BADGE: Record<
-  ProductResult['sellerReputation'],
-  { label: string; color: string }
-> = {
-  verified: { label: '✓ Verified', color: Colors.success },
-  trusted: { label: '✓ Trusted', color: Colors.accent },
-  unknown: { label: '? Unknown', color: Colors.warning },
+const CATEGORY_CONFIG: Record<SortCategory, { color: string; emoji: string }> = {
+  cheapest: { color: Colors.cheapest, emoji: '💚' },
+  best: { color: Colors.best, emoji: '⭐' },
+  fastest: { color: Colors.fastest, emoji: '⚡' },
 };
 
 export function ProductCard({ product, category, rank }: Props) {
+  const { t } = useTranslation();
+
+  const repBadge = {
+    verified: { label: t('reputation.verified'), color: Colors.success },
+    trusted: { label: t('reputation.trusted'), color: Colors.accent },
+    unknown: { label: t('reputation.unknown'), color: Colors.warning },
+  }[product.sellerReputation];
+
   const config = CATEGORY_CONFIG[category];
-  const repBadge = REPUTATION_BADGE[product.sellerReputation];
 
   const handleOpen = async () => {
     if (!product.isSecure) {
       Alert.alert(
-        'Security Warning',
-        'This link may not be fully verified. Proceed with caution.',
+        t('product.securityWarning'),
+        t('product.securityWarningMessage'),
         [
-          { text: 'Cancel', style: 'cancel' },
-          { text: 'Open Anyway', onPress: () => void Linking.openURL(product.purchaseUrl) },
+          { text: t('product.cancel'), style: 'cancel' },
+          { text: t('product.openAnyway'), onPress: () => void Linking.openURL(product.purchaseUrl) },
         ]
       );
       return;
@@ -52,13 +51,19 @@ export function ProductCard({ product, category, rank }: Props) {
     if (supported) {
       await Linking.openURL(product.purchaseUrl);
     } else {
-      Alert.alert('Error', 'Cannot open this link.');
+      Alert.alert(t('app.error'), t('app.cannotOpenLink'));
     }
   };
 
   const renderStars = (rating: number) => {
     const stars = Math.round(rating);
     return '★'.repeat(Math.min(stars, 5)) + '☆'.repeat(Math.max(0, 5 - stars));
+  };
+
+  const getDeliveryLabel = () => {
+    if (product.estimatedDeliveryDays <= 3) return t('product.express');
+    if (product.estimatedDeliveryDays <= 7) return t('product.fast');
+    return t('product.standard');
   };
 
   return (
@@ -98,11 +103,11 @@ export function ProductCard({ product, category, rank }: Props) {
             <Text style={[styles.stars, { color: Colors.warning }]}>{renderStars(product.rating)}</Text>
             <Text style={styles.ratingText}>
               {product.rating.toFixed(1)}
-              {product.reviewCount > 0 ? ` (${product.reviewCount.toLocaleString()} reviews)` : ''}
+              {product.reviewCount > 0 ? ` (${product.reviewCount.toLocaleString()} ${t('product.reviews')})` : ''}
             </Text>
           </>
         ) : (
-          <Text style={styles.ratingText}>No rating available</Text>
+          <Text style={styles.ratingText}>{t('product.noRating')}</Text>
         )}
       </View>
 
@@ -112,17 +117,11 @@ export function ProductCard({ product, category, rank }: Props) {
             €{product.totalCost.toFixed(2)}
           </Text>
           <Text style={styles.priceBreakdown}>
-            + €{product.shippingCost.toFixed(2)} shipping
+            + €{product.shippingCost.toFixed(2)} {t('product.shipping')}
           </Text>
         </View>
         <View style={styles.deliveryBadge}>
-          <Text style={styles.deliveryText}>
-            {product.estimatedDeliveryDays <= 3
-              ? '⚡ Express'
-              : product.estimatedDeliveryDays <= 7
-              ? '✈️ Fast'
-              : '📦 Standard'}
-          </Text>
+          <Text style={styles.deliveryText}>{getDeliveryLabel()}</Text>
           <Text style={styles.deliveryDays}>{product.estimatedDeliveryDays}d</Text>
         </View>
       </View>
@@ -133,7 +132,7 @@ export function ProductCard({ product, category, rank }: Props) {
         activeOpacity={0.8}
       >
         <Text style={styles.buyButtonText}>
-          {product.isSecure ? '🔒 View Deal' : '⚠️ View Deal'}
+          {product.isSecure ? `🔒 ${t('product.viewDeal')}` : `⚠️ ${t('product.viewDeal')}`}
         </Text>
       </TouchableOpacity>
     </View>

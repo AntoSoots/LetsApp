@@ -11,6 +11,7 @@ import {
   StyleSheet,
 } from 'react-native';
 import { useRouter } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { ImagePickerComponent } from '../components/ImagePickerComponent';
 import { useNotifications } from '../hooks/useNotifications';
@@ -25,14 +26,16 @@ const EXAMPLE_HINTS = [
   'heavy duty decorative stone garden edging',
 ];
 
-const ORIGIN_CONFIG: Record<SourceOrigin, { label: string; flag: string }> = {
-  estonia: { label: 'Eesti', flag: '🇪🇪' },
-  europe: { label: 'Euroopa', flag: '🇪🇺' },
-  global: { label: 'Globaalne', flag: '🌍' },
+type OriginKey = 'estonia' | 'europe' | 'global';
+const ORIGIN_FLAGS: Record<OriginKey, string> = {
+  estonia: '🇪🇪',
+  europe: '🇪🇺',
+  global: '🌍',
 };
 
 export default function HomeScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
   const { pushToken } = useNotifications();
   const { submitSearch, isLoading, error } = useProductSearch();
 
@@ -45,7 +48,7 @@ export default function HomeScreen() {
 
   const handleSubmit = async () => {
     if (!textInput.trim() && !imageUri) {
-      Alert.alert('Input Required', 'Please enter a product description or upload an image.');
+      Alert.alert(t('home.inputRequired'), t('home.inputRequiredMessage'));
       return;
     }
 
@@ -62,7 +65,7 @@ export default function HomeScreen() {
         params: { requestId, query: textInput.trim() },
       });
     } else {
-      Alert.alert('Error', error ?? 'Failed to start search. Please try again.');
+      Alert.alert(t('app.error'), error ?? t('home.submitError'));
     }
   };
 
@@ -77,7 +80,7 @@ export default function HomeScreen() {
 
   return (
     <SafeAreaView style={styles.container} edges={['bottom']}>
-      <LoadingOverlay visible={isLoading} message="Preparing your search..." />
+      <LoadingOverlay visible={isLoading} message={t('home.preparing')} />
       <KeyboardAvoidingView
         style={styles.flex}
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -92,15 +95,13 @@ export default function HomeScreen() {
           {/* Hero */}
           <View style={styles.hero}>
             <Text style={styles.heroEmoji}>🔍</Text>
-            <Text style={styles.heroTitle}>Tehop AI Sourcing</Text>
-            <Text style={styles.heroSubtitle}>
-              Describe or photograph any product — AI finds the best deals across the web
-            </Text>
+            <Text style={styles.heroTitle}>{t('home.heroTitle')}</Text>
+            <Text style={styles.heroSubtitle}>{t('home.heroSubtitle')}</Text>
           </View>
 
           {/* Image Picker */}
           <View style={styles.section}>
-            <Text style={styles.sectionLabel}>Product Image (Optional)</Text>
+            <Text style={styles.sectionLabel}>{t('home.imageSectionLabel')}</Text>
             <ImagePickerComponent
               imageUri={imageUri}
               onImageSelected={(uri, base64) => {
@@ -116,7 +117,7 @@ export default function HomeScreen() {
 
           {/* Text Input */}
           <View style={styles.section}>
-            <Text style={styles.sectionLabel}>Describe the Product *</Text>
+            <Text style={styles.sectionLabel}>{t('home.descriptionLabel')} *</Text>
             <TextInput
               style={styles.textInput}
               multiline
@@ -132,10 +133,9 @@ export default function HomeScreen() {
 
           {/* Origin Filters */}
           <View style={styles.section}>
-            <Text style={styles.sectionLabel}>Search Region</Text>
+            <Text style={styles.sectionLabel}>{t('home.regionLabel')}</Text>
             <View style={styles.originRow}>
-              {(['estonia', 'europe', 'global'] as SourceOrigin[]).map((origin) => {
-                const config = ORIGIN_CONFIG[origin];
+              {(['estonia', 'europe', 'global'] as OriginKey[]).map((origin) => {
                 const active = filters.origin.includes(origin);
                 return (
                   <TouchableOpacity
@@ -144,9 +144,9 @@ export default function HomeScreen() {
                     onPress={() => toggleOrigin(origin)}
                     activeOpacity={0.7}
                   >
-                    <Text style={styles.flag}>{config.flag}</Text>
+                    <Text style={styles.flag}>{ORIGIN_FLAGS[origin]}</Text>
                     <Text style={[styles.originLabel, active && styles.originLabelActive]}>
-                      {config.label}
+                      {t(`regions.${origin}`)}
                     </Text>
                   </TouchableOpacity>
                 );
@@ -156,7 +156,7 @@ export default function HomeScreen() {
 
           {/* Example hints */}
           <View style={styles.section}>
-            <Text style={styles.sectionLabel}>Try an Example</Text>
+            <Text style={styles.sectionLabel}>{t('home.examplesLabel')}</Text>
             <View style={styles.hintsContainer}>
               {EXAMPLE_HINTS.map((hint) => (
                 <TouchableOpacity
@@ -179,13 +179,11 @@ export default function HomeScreen() {
             activeOpacity={0.85}
           >
             <Text style={styles.submitIcon}>🚀</Text>
-            <Text style={styles.submitText}>Source My Product</Text>
+            <Text style={styles.submitText}>{t('home.submitButton')}</Text>
           </TouchableOpacity>
 
           <View style={styles.footer}>
-            <Text style={styles.footerText}>
-              🔒 Secure · AI-Powered · Up to 5 min processing time
-            </Text>
+            <Text style={styles.footerText}>{t('home.footer')}</Text>
           </View>
         </ScrollView>
       </KeyboardAvoidingView>

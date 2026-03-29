@@ -7,21 +7,25 @@ import {
   Easing,
 } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useProductSearch } from '../hooks/useProductSearch';
 import { Colors } from '../constants/colors';
 
-const STEPS = [
-  { emoji: '🔍', label: 'Analyzing your request...' },
-  { emoji: '🤖', label: 'AI is generating search queries...' },
-  { emoji: '🌐', label: 'Scouring the web for products...' },
-  { emoji: '🔒', label: 'Verifying seller security...' },
-  { emoji: '📊', label: 'Comparing prices and reviews...' },
-  { emoji: '✅', label: 'Finalizing results...' },
+type StepKey = 'analyzing' | 'generating' | 'scouring' | 'verifying' | 'comparing' | 'finalizing';
+
+const STEP_KEYS: { key: StepKey; emoji: string }[] = [
+  { key: 'analyzing', emoji: '🔍' },
+  { key: 'generating', emoji: '🤖' },
+  { key: 'scouring', emoji: '🌐' },
+  { key: 'verifying', emoji: '🔒' },
+  { key: 'comparing', emoji: '📊' },
+  { key: 'finalizing', emoji: '✅' },
 ];
 
 export default function ProcessingScreen() {
   const router = useRouter();
+  const { t } = useTranslation();
   const { requestId, query } = useLocalSearchParams<{ requestId: string; query: string }>();
   const { pollStatus, fetchResults } = useProductSearch();
 
@@ -57,7 +61,7 @@ export default function ProcessingScreen() {
   // Step progression — advance every 6s to stay in sync with ~8s poll cycles
   useEffect(() => {
     const stepInterval = setInterval(() => {
-      setCurrentStep((prev) => Math.min(prev + 1, STEPS.length - 1));
+      setCurrentStep((prev) => Math.min(prev + 1, STEP_KEYS.length - 1));
     }, 6000);
     return () => clearInterval(stepInterval);
   }, []);
@@ -118,29 +122,27 @@ export default function ProcessingScreen() {
           </View>
         </Animated.View>
 
-        <Text style={styles.title}>AI is Sourcing</Text>
-        <Text style={styles.subtitle}>
-          Finding the best deals for you.{'\n'}This may take up to 5 minutes.
-        </Text>
+        <Text style={styles.title}>{t('processing.title')}</Text>
+        <Text style={styles.subtitle}>{t('processing.subtitle')}</Text>
 
         {query ? (
           <View style={styles.queryBox}>
-            <Text style={styles.queryLabel}>Your Search</Text>
+            <Text style={styles.queryLabel}>{t('processing.yourSearch')}</Text>
             <Text style={styles.queryText}>"{query}"</Text>
           </View>
         ) : null}
 
         {aiQuery ? (
           <View style={[styles.queryBox, styles.aiQueryBox]}>
-            <Text style={styles.queryLabel}>AI-Generated Query</Text>
+            <Text style={styles.queryLabel}>{t('processing.aiQuery')}</Text>
             <Text style={[styles.queryText, { color: Colors.primary }]}>"{aiQuery}"</Text>
           </View>
         ) : null}
 
         {/* Steps */}
         <View style={styles.stepsContainer}>
-          {STEPS.map((step, index) => (
-            <View key={index} style={styles.stepRow}>
+          {STEP_KEYS.map((step, index) => (
+            <View key={step.key} style={styles.stepRow}>
               <View
                 style={[
                   styles.stepIndicator,
@@ -161,20 +163,18 @@ export default function ProcessingScreen() {
                   index === currentStep && styles.stepLabelActive,
                 ]}
               >
-                {step.label}
+                {t(`processing.steps.${step.key}`)}
               </Text>
             </View>
           ))}
         </View>
 
         <View style={styles.timerContainer}>
-          <Text style={styles.timerLabel}>Elapsed</Text>
+          <Text style={styles.timerLabel}>{t('processing.elapsed')}</Text>
           <Text style={styles.timerValue}>{formatTime(elapsed)}</Text>
         </View>
 
-        <Text style={styles.notificationNote}>
-          🔔 You'll receive a push notification when results are ready
-        </Text>
+        <Text style={styles.notificationNote}>{t('processing.notificationNote')}</Text>
       </View>
     </SafeAreaView>
   );
